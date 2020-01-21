@@ -2,9 +2,17 @@ import React, { useContext, useState } from "react"
 import { animated } from "react-spring"
 import { StoreContext } from "../../context/StoreContext"
 
+import {
+  CartContainer,
+  CloseBtn,
+  CouponForm,
+  Label,
+} from "../styles/StyledCart"
+import { Button } from "../styles/StyledButton"
+import ShopifyLogo from "../../images/shopify_logo_whitebg.svg"
+
 const Cart = ({ style }) => {
   const {
-    isCartOpen,
     checkout,
     toggleCartOpen,
     removeProductFromCart,
@@ -16,35 +24,8 @@ const Cart = ({ style }) => {
   const [coupon, setCoupon] = useState("")
 
   return (
-    <animated.div
-      style={{
-        zIndex: 1000,
-        position: "fixed",
-        top: 0,
-        right: 0,
-        width: "40%",
-        height: "100%",
-        background: "white",
-        padding: "40px 2%",
-        boxShadow: "var(--elevation-4)",
-        overflowY: "auto",
-        ...style,
-      }}
-    >
-      <button
-        style={{
-          background: "#ff3860",
-          // position: "absolute",
-          // top: 10,
-          // right: 10,
-          width: "25px",
-          height: "25px",
-          borderRadius: "50%"
-        }}
-        onClick={toggleCartOpen}
-      >
-        X
-      </button>
+    <CartContainer as={animated.div} style={{ ...style }}>
+      <CloseBtn onClick={toggleCartOpen}>X</CloseBtn>
       <h3 className="title">Cart</h3>
       {checkout.lineItems.length > 0 ? (
         <>
@@ -56,23 +37,31 @@ const Cart = ({ style }) => {
               <div
                 style={{
                   width: 100,
-                  height: 100,
                   overflow: "hidden",
                   marginRight: 10,
                 }}
               >
-                <img src={item.variant.image.src} alt={item.title} />
+                <img
+                  style={{ width: `100px` }}
+                  src={item.customAttributes[0].value}
+                  alt={item.title}
+                />
               </div>
               <div>
-                <h4 className="title is-4">{item.title}</h4>
-                <p className="subtitle is-5">${item.variant.price}</p>
-                <p className="subtitle is-5">Qty: {item.quantity}</p>
-                <button
-                  className="is-small button is-danger is-outlined"
+                <h4>{item.title}</h4>
+                <p>{item.variant.title}</p>
+                <p>${item.variant.price}</p>
+                <p>Orders: {item.quantity}</p>
+                <Button
+                  color="white"
+                  bg="pink"
+                  p={2}
+                  border="none"
+                  borderRadius={1}
                   onClick={() => removeProductFromCart(item.id)}
                 >
                   Remove
-                </button>
+                </Button>
               </div>
             </div>
           ))}
@@ -94,16 +83,16 @@ const Cart = ({ style }) => {
                 </span>
               </div>
             ) : (
-              <form
+              <CouponForm
                 onSubmit={e => {
                   e.preventDefault()
                   checkCoupon(coupon)
                 }}
               >
-                <div className="field">
-                  <label htmlFor="coupon" className="label">
-                    Coupon
-                  </label>
+                <div>
+                  <Label mr={2} htmlFor="coupon">
+                    Coupon:
+                  </Label>
                   <input
                     className="input"
                     value={coupon}
@@ -111,32 +100,55 @@ const Cart = ({ style }) => {
                     type="text"
                   />
                 </div>
-                <button className="button">Add Coupon</button>
-              </form>
+                <Button
+                  bg="white"
+                  color="blue"
+                  border="2px solid"
+                  borderColor="blue"
+                  borderRadius={1}
+                  p={1}
+                >
+                  Add Coupon
+                </Button>
+              </CouponForm>
             )}
           </div>
           <hr />
-          <div style={{ display: "flex" }}>
-            <p style={{ alignSelf: "flex-end", marginRight: 10 }}>Tax:</p>
-            <h6 className="title">${checkout.totalTax}</h6>
+          <div style={{ display: "flex", alignItems: "center" }}>
+            <p style={{ marginRight: 10 }}>Tax & Shipping:</p>
+            <h4>Calculated at checkout.</h4>
           </div>
-          <div style={{ display: "flex" }}>
-            <p style={{ alignSelf: "flex-end", marginRight: 10 }}>Sub Total:</p>
-            <h6 className="title">${checkout.subtotalPrice}</h6>
+          <div style={{ display: "flex", alignItems: "center" }}>
+            <p style={{ marginRight: 10 }}>Total:</p>
+            <h4>${checkout.totalPrice}</h4>
           </div>
-          <hr />
-          <div style={{ display: "flex" }}>
-            <p style={{ alignSelf: "flex-end", marginRight: 10 }}>Total:</p>
-            <h5 className="title">${checkout.totalPrice}</h5>
-          </div>
-          <div>
-            <a
-              style={{ marginTop: "2rem" }}
-              href={checkout.webUrl}
-              className="button is-fullwidth is-success"
-            >
-              Checkout Now
-            </a>
+          <hr style={{ marginBottom: `2rem` }} />
+          <Button
+            cta
+            as="a"
+            href={checkout.webUrl}
+            color="white"
+            p={2}
+            borderRadius={1}
+          >
+            Checkout Now
+          </Button>
+          <div
+            style={{
+              padding: `2rem`,
+              display: `flex`,
+              alignItems: `center`,
+              justifyContent: `center`
+            }}
+          >
+            <small>Checkout secured by </small>
+            <span>
+              <img
+                style={{ width: `70px`, marginLeft: `6px` }}
+                src={ShopifyLogo}
+                alt="Shopify Logo"
+              />
+            </span>
           </div>
         </>
       ) : (
@@ -144,7 +156,7 @@ const Cart = ({ style }) => {
           <p className="level-item">Cart is empty</p>
         </div>
       )}
-    </animated.div>
+    </CartContainer>
   )
 }
 

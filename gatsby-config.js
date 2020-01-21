@@ -1,3 +1,8 @@
+// Load the environment variables.
+require('dotenv').config({
+  path: `.env.${process.env.NODE_ENV}`,
+});
+
 module.exports = {
   siteMetadata: {
     title: `Gatsby Default Starter`,
@@ -13,8 +18,6 @@ module.exports = {
         path: `${__dirname}/src/images`,
       },
     },
-    `gatsby-transformer-sharp`,
-    `gatsby-plugin-sharp`,
     {
       resolve: `gatsby-plugin-manifest`,
       options: {
@@ -33,11 +36,35 @@ module.exports = {
         repositoryName: `Manystickers`,
         pages: [
           {
-            type: `Product`, // TypeName from prismic
-            match: `/product/:uid`, // Pages will be generated under this pattern
-            path: `/products`, // Placeholder page for unpublished documents
+            type: `Customer_uploaded_sticker`, // TypeName from prismic
+            match: `/custom-sticker/:uid`, // Pages will be generated under this pattern
+            path: `/custom-stickers`, // Placeholder page for unpublished documents
             component: require.resolve(
-              "./src/templates/ProductDetailTemplate.js"
+              "./src/templates/CustomerUploadedSticker.js"
+            ),
+          },
+          {
+            type: `Sticker_with_1_transformation`, // TypeName from prismic
+            match: `/sticker-template/:uid`, // Pages will be generated under this pattern
+            path: `/sticker-templates`, // Placeholder page for unpublished documents
+            component: require.resolve(
+              "./src/templates/StickerOneTemplate.js"
+            ),
+          },
+          // {
+          //   type: `Sticker_with_2_transformations`, // TypeName from prismic
+          //   match: `/custom-sticker/:uid`, // Pages will be generated under this pattern
+          //   path: `/custom-stickers`, // Placeholder page for unpublished documents
+          //   component: require.resolve(
+          //     "./src/templates/StickerTwoTemplate.js"
+          //   ),
+          // },
+          {
+            type: `Sticker_with_3_transformations`, // TypeName from prismic
+            match: `/sticker-template/:uid`, // Pages will be generated under this pattern
+            path: `/sticker-templates`, // Placeholder page for unpublished documents
+            component: require.resolve(
+              "./src/templates/StickerThreeTemplate.js"
             ),
           },
         ],
@@ -53,13 +80,32 @@ module.exports = {
       },
     },
     {
-      resolve: "gatsby-plugin-react-svg",
+      resolve: `gatsby-plugin-google-fonts`,
       options: {
-        rule: {
-          include: /assets/ // See below to configure properly
-        }
-      }
-    }
+        fonts: [
+          `PT Mono`,
+          `Oswald:400,600`, // you can also specify font weights and styles
+        ],
+      },
+    },
+    {
+      resolve: `gatsby-source-filesystem`,
+      options: {
+        name: `images`,
+        path: `src/images`,
+      },
+    },
+    {
+      resolve: 'gatsby-transformer-cloudinary',
+      options: {
+        cloudName: process.env.CLOUDINARY_CLOUD_NAME,
+        apiKey: process.env.CLOUDINARY_API_KEY,
+        apiSecret: process.env.CLOUDINARY_API_SECRET,
+
+        // This folder will be created if it doesn’t exist.
+        uploadFolder: 'gatsby-cloudinary',
+      },
+    },
     // this (optional) plugin enables Progressive Web App + Offline functionality
     // To learn more, visit: https://gatsby.dev/offline
     // `gatsby-plugin-offline`,

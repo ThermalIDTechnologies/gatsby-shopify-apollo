@@ -1,9 +1,16 @@
 import React from "react"
-import { Link, useStaticQuery, graphql } from "gatsby"
+import { useStaticQuery, graphql } from "gatsby"
 
 import Header from "../components/header"
-import Image from "../components/image"
+import Footer from "../components/Footer"
 import SEO from "../components/seo"
+import {
+  HomeContainer,
+  Hero,
+  ImgContainer,
+  LeftContainer,
+} from "./../components/styles/StyledHome"
+import { Button } from "./../components/styles/StyledButton"
 
 const IndexPage = () => {
   const data = useStaticQuery(graphql`
@@ -18,26 +25,48 @@ const IndexPage = () => {
 
   return (
     <>
-      <div className="hero">
-      <Header siteTitle={data.site.siteMetadata.title} />
-      <SEO title="Home" />
-        <h1>Hi people</h1>
-        <p>Welcome to your new Gatsby site.</p>
-        <p>Now go build something great.</p>
-        <div style={{ maxWidth: `300px`, marginBottom: `1.45rem` }}>
-          <Image />
-        </div>
-        <Link to="/page-2/">Go to page 2</Link>
-        <br />
-        <Link to="/product/die-cut-sticker">Die Cut Sticker</Link>
-        <br />
-        <Link to="/product/trump-sticker">Trump Sticker</Link>
+      <div className="site">
+        <Header siteTitle={data.site.siteMetadata.title} />
+        <HomeContainer className="site-content">
+          <SEO title="Home" />
+          <Hero>
+            <LeftContainer>
+              <h1>
+                Many Stickers...
+                <br />
+                It's more than a few!
+              </h1>
+              <br />
+              <div>
+                <p>
+                  Bring your sticker ideas to life and show off your
+                  personality.
+                  <br />
+                  Get instant pricing online or give us a call for a custom
+                  quote.
+                  <br />
+                  <span>Tell Your Sticker Story, Create Yours Today!</span>
+                </p>
+              </div>
+              <br />
+              <Button
+                cta
+                px={4}
+                py={3}
+                border="none"
+                borderRadius={1}
+                color="white"
+              >
+                <h2>Get Sticky!</h2>
+              </Button>
+            </LeftContainer>
+            <ImgContainer>
+              <img src="https://res.cloudinary.com/crjars/image/upload/c_scale,f_auto,q_auto:best,w_400/v1575587390/ms-logo.svg" />
+            </ImgContainer>
+          </Hero>
+        </HomeContainer>
+        <Footer />
       </div>
-      <footer>
-        © {new Date().getFullYear()}, Built with
-        {` `}
-        <a href="https://www.gatsbyjs.org">Gatsby</a>
-      </footer>
     </>
   )
 }

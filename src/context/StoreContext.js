@@ -8,9 +8,12 @@ const client = Client.buildClient({
 
 const defaultValues = {
   isCartOpen: false,
+  isNavOpen: false,
   toggleCartOpen: () => {},
+  toggleNavOpen: () => {},
   cart: [],
   addProductToCart: () => {},
+  addCustomerStickerToCart: () => {},
   removeProductFromCart: () => {},
   checkCoupon: () => {},
   removeCoupon: () => {},
@@ -18,7 +21,7 @@ const defaultValues = {
   checkout: {
     lineItems: [],
   },
-  customText: "",
+  selectedVariant: "",
 }
 
 export const StoreContext = createContext(defaultValues)
@@ -29,9 +32,12 @@ const isBrowser = typeof window != "undefined"
 export const StoreProvider = ({ children }) => {
   const [checkout, setCheckout] = useState(defaultValues.checkout)
   const [isCartOpen, setIsCartOpen] = useState(false)
+  const [isNavOpen, setNavOpen] = useState(false)
   const [customText, setCustomText] = useState("")
+  const [selectedVariant, setSelectedVariant] = useState()
 
   const toggleCartOpen = () => setIsCartOpen(!isCartOpen)
+  const toggleNavOpen = () => setNavOpen(!isNavOpen)
 
   useEffect(() => {
     const initializeCheckout = async () => {
@@ -76,13 +82,22 @@ export const StoreProvider = ({ children }) => {
     }
   }
 
-  const addProductToCart = async variantId => {
+  const addProductToCart = async (variantId, cloudinaryImgUrl) => {
     try {
       const lineItems = [
         {
           variantId,
           quantity: 1,
-          customAttributes: [{ key: "MyKey", value: `${customText}` }],
+          customAttributes: [
+            { 
+              key: "_Cloudinary Image URL", 
+              value: `${cloudinaryImgUrl}` 
+            },
+            {
+              key: "_myKey",
+              value: "_myValue"
+            }
+          ],
         },
       ]
       const newCheckout = await client.checkout.addLineItems(
@@ -90,7 +105,40 @@ export const StoreProvider = ({ children }) => {
         lineItems
       )
       setCheckout(newCheckout)
-      // console.log(newCheckout.webUrl)
+      setSelectedVariant()
+    } catch (e) {
+      console.error(e)
+    }
+  }
+
+  const addCustomerStickerToCart = async (variantId, cloudinaryImgUrl, publicId, originalFilename) => {
+    try {
+      const lineItems = [
+        {
+          variantId,
+          quantity: 1,
+          customAttributes: [
+            { 
+              key: "_Cloudinary Image URL", 
+              value: `${cloudinaryImgUrl}` 
+            },
+            {
+              key: "_Public ID",
+              value: `${publicId}`
+            },
+            {
+              key: "Uploaded File Name",
+              value: `${originalFilename}`
+            },
+          ],
+        },
+      ]
+      const newCheckout = await client.checkout.addLineItems(
+        checkout.id,
+        lineItems
+      )
+      setCheckout(newCheckout)
+      setSelectedVariant()
     } catch (e) {
       console.error(e)
     }
@@ -124,11 +172,16 @@ export const StoreProvider = ({ children }) => {
         ...defaultValues,
         checkout,
         addProductToCart,
+        addCustomerStickerToCart,
         removeProductFromCart,
         toggleCartOpen,
+        toggleNavOpen,
         isCartOpen,
+        isNavOpen,
         customText,
         setCustomText,
+        selectedVariant,
+        setSelectedVariant,
         checkCoupon,
         removeCoupon,
       }}
