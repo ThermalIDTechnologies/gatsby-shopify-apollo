@@ -46,10 +46,10 @@ const Header = ({ siteTitle }) => {
             <Link to="/custom-sticker/die-cut-sticker">Die Cut Stickers</Link>
           </li>
           <li>
-            <Link to="/sticker-template/anti-trump">Anti-Trump Sticker Template</Link>
+            <Link to="/sticker-template-1/anti-trump">Anti-Trump Sticker Template</Link>
           </li>
           <li>
-            <Link to="/page-2">Sticker</Link>
+            <Link>Dummy Link</Link>
           </li>
         </Ul>
         <Ul>

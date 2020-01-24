@@ -36,13 +36,13 @@ const MobileNav = ({ isOpen }) => {
       >
         <MobileNavUl>
           <li>
-            <Link to="/custom-sticker/die-cut-sticker" onClick={toggleNavOpen}>Stickers</Link>
+            <Link to="/custom-sticker/die-cut-sticker" onClick={toggleNavOpen}>Die Cut Stickers</Link>
           </li>
           <li>
-            <Link to="/sticker-template/anti-trump" onClick={toggleNavOpen}>Stickers</Link>
+            <Link to="/sticker-template-1/anti-trump" onClick={toggleNavOpen}>Anti-Trump Sticker Template</Link>
           </li>
           <li>
-            <Link>Stickers</Link>
+            <Link>Dummy Link</Link>
           </li>
         </MobileNavUl>
       </MobileNavRight>

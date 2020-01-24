@@ -19,6 +19,7 @@ import {
 } from "./../components/styles/StyledProduct"
 import { Button } from "./../components/styles/StyledButton"
 
+
 const reducer = (state, action) => {
   switch (action.type) {
     case "SET_IMAGE_URL": {
@@ -134,10 +135,55 @@ const reducer = (state, action) => {
   }
 }
 
+export const query = graphql`
+  query($uid: String!) {
+    prismic {
+      allSticker_with_3_transformationss(uid: $uid) {
+        edges {
+          node {
+            sticker
+            _meta {
+              uid
+            }
+            number_of_transformations
+            sticker_text
+            sticker_text_2
+            sticker_text_3
+            cloud_name
+            public_id
+            font_color
+            font_color_2
+            font_color_3
+            font_family
+            font_family_2
+            font_family_3
+            font_size
+            font_size_2
+            font_size_3
+            gravity
+            gravity_2
+            gravity_3
+            height
+            height_2
+            height_3
+            width
+            width_2
+            width_3
+            x
+            x_2
+            x_3
+            y
+            y_2
+            y_3
+          }
+        }
+      }
+    }
+  }
+`
+
 const StickerThreeTemplate = ({ data }) => {
-  const doc = data.prismic.allSticker_with_3_transformationss.edges
-    .slice(0, 1)
-    .pop()
+  const doc = data.prismic.allSticker_with_3_transformationss.edges.slice(0, 1).pop()
 
   const { selectedVariant } = useContext(StoreContext)
 
@@ -410,51 +456,6 @@ const StickerThreeTemplate = ({ data }) => {
   )
 }
 
-export default StickerThreeTemplate
+StickerThreeTemplate.query = query
 
-export const query = graphql`
-  query($uid: String!) {
-    prismic {
-      allSticker_with_3_transformationss(uid: $uid) {
-        edges {
-          node {
-            sticker
-            _meta {
-              uid
-            }
-            number_of_transformations
-            sticker_text
-            sticker_text_2
-            sticker_text_3
-            cloud_name
-            public_id
-            font_color
-            font_color_2
-            font_color_3
-            font_family
-            font_family_2
-            font_family_3
-            font_size
-            font_size_2
-            font_size_3
-            gravity
-            gravity_2
-            gravity_3
-            height
-            height_2
-            height_3
-            width
-            width_2
-            width_3
-            x
-            x_2
-            x_3
-            y
-            y_2
-            y_3
-          }
-        }
-      }
-    }
-  }
-`
+export default StickerThreeTemplate

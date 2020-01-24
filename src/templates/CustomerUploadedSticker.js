@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react"
-// import { Link } from "gatsby"
+import { graphql } from "gatsby"
 import SEO from "../components/seo"
 import ShopifyApolloContainer from "../components/ShopifyApolloContainer"
 import AddCustomerStickerToCart from "./../components/Cart/AddCustomerStickerToCart"
@@ -14,11 +14,29 @@ import {
 } from "./../components/styles/StyledProduct"
 import { useSpring, config } from "react-spring"
 
+export const query = graphql`
+  query($uid: String!) {
+    prismic {
+      allCustomer_uploaded_stickers(uid: $uid) {
+        edges {
+          node {
+            sticker_type
+            _meta {
+              uid
+            }
+            title
+          }
+        }
+      }
+    }
+  }
+`
+
 const CustomerUploadedSticker = ({ data }) => {
   const doc = data.prismic.allCustomer_uploaded_stickers.edges.slice(0, 1).pop()
-
+  
   const { selectedVariant } = useContext(StoreContext)
-
+  
   const [image, setImage] = useState("")
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState("")
@@ -119,24 +137,8 @@ const CustomerUploadedSticker = ({ data }) => {
   )
 }
 
+CustomerUploadedSticker.query = query
+
 export default CustomerUploadedSticker
 
 // https://api.cloudinary.com/v1_1/crjars
-
-export const query = graphql`
-  query($uid: String!) {
-    prismic {
-      allCustomer_uploaded_stickers(uid: $uid) {
-        edges {
-          node {
-            sticker_type
-            _meta {
-              uid
-            }
-            title
-          }
-        }
-      }
-    }
-  }
-`

@@ -8,9 +8,15 @@ import {
   ButtonWrapper,
   Price,
 } from "./styles/StyledProduct"
-import { a, useSpring } from "react-spring"
+import { useSpring } from "react-spring"
 
-const ShopifyVariantGetter = ({ loading, error, data, handle, isSubmitted, children }) => {
+const ShopifyVariantGetter = ({
+  loading,
+  error,
+  data,
+  handle,
+  children,
+}) => {
   const [selectedOptions] = useState({})
   const { selectedVariant, setSelectedVariant } = useContext(StoreContext)
 
@@ -37,15 +43,6 @@ const ShopifyVariantGetter = ({ loading, error, data, handle, isSubmitted, child
       selectedVariant
     )
   }
-
-  console.log(selectedVariant)
-
-  console.log(data)
-
-  const variantFade = useSpring({
-    opacity: isSubmitted ? 1 : 0,
-    height: isSubmitted ? 238 : 0,
-  })
 
   const buttonFade = useSpring({
     opacity: selectedVariant ? 1 : 0,

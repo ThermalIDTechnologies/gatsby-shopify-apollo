@@ -32,14 +32,18 @@ export const MobileNavUl = styled.ul`
   padding: 0;
 
   li {
-    padding: 1.5rem
+    padding: 1.5rem;
 
     a {
       text-decoration: none;
       text-transform: uppercase;
       color: white;
-      padding: 1rem 2rem;
-      font-size: 1.5rem;
+      padding: 1rem .75rem;
+      font-size: 1rem;
+
+      @media screen and (min-width: 770px) {
+        font-size: 1.5rem;
+      }
     }
   }
 `

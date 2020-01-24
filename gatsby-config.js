@@ -1,7 +1,7 @@
 // Load the environment variables.
-require('dotenv').config({
-  path: `.env.${process.env.NODE_ENV}`,
-});
+require("dotenv").config({
+  path: `.env`,
+})
 
 module.exports = {
   siteMetadata: {
@@ -30,6 +30,7 @@ module.exports = {
         icon: `src/images/gatsby-icon.png`, // This path is relative to the root of the site.
       },
     },
+    `gatsby-plugin-styled-components`,
     {
       resolve: `gatsby-source-prismic-graphql`,
       options: {
@@ -45,11 +46,9 @@ module.exports = {
           },
           {
             type: `Sticker_with_1_transformation`, // TypeName from prismic
-            match: `/sticker-template/:uid`, // Pages will be generated under this pattern
+            match: `/sticker-template-1/:uid`, // Pages will be generated under this pattern
             path: `/sticker-templates`, // Placeholder page for unpublished documents
-            component: require.resolve(
-              "./src/templates/StickerOneTemplate.js"
-            ),
+            component: require.resolve("./src/templates/StickerOneTemplate.js"),
           },
           // {
           //   type: `Sticker_with_2_transformations`, // TypeName from prismic
@@ -59,14 +58,14 @@ module.exports = {
           //     "./src/templates/StickerTwoTemplate.js"
           //   ),
           // },
-          {
-            type: `Sticker_with_3_transformations`, // TypeName from prismic
-            match: `/sticker-template/:uid`, // Pages will be generated under this pattern
-            path: `/sticker-templates`, // Placeholder page for unpublished documents
-            component: require.resolve(
-              "./src/templates/StickerThreeTemplate.js"
-            ),
-          },
+          // {
+          //   type: `Sticker_with_3_transformations`, // TypeName from prismic
+          //   match: `/sticker-template-3/:uid`, // Pages will be generated under this pattern
+          //   path: `/sticker-templates`, // Placeholder page for unpublished documents
+          //   component: require.resolve(
+          //     "./src/templates/StickerThreeTemplate.js"
+          //   ),
+          // },
         ],
       },
     },
@@ -96,14 +95,14 @@ module.exports = {
       },
     },
     {
-      resolve: 'gatsby-transformer-cloudinary',
+      resolve: "gatsby-transformer-cloudinary",
       options: {
-        cloudName: process.env.CLOUDINARY_CLOUD_NAME,
-        apiKey: process.env.CLOUDINARY_API_KEY,
-        apiSecret: process.env.CLOUDINARY_API_SECRET,
+        cloudName: `${process.env.CLOUDINARY_CLOUD_NAME}`,
+        apiKey: `${process.env.CLOUDINARY_API_KEY}`,
+        apiSecret: `${process.env.CLOUDINARY_API_SECRET}`,
 
         // This folder will be created if it doesn’t exist.
-        uploadFolder: 'gatsby-cloudinary',
+        uploadFolder: "gatsby-cloudinary",
       },
     },
     // this (optional) plugin enables Progressive Web App + Offline functionality

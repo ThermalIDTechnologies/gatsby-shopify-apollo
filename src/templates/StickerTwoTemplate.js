@@ -98,6 +98,43 @@ const reducer = (state, action) => {
   }
 }
 
+export const query = graphql`
+  query($uid: String!) {
+    prismic {
+      allProducts(uid: $uid) {
+        edges {
+          node {
+            sticker
+            _meta {
+              uid
+            }
+            sticker_text
+            sticker_text_2
+            cloud_name
+            public_id
+            font_color
+            font_color_2
+            font_family
+            font_family_2
+            font_size
+            font_size_2
+            gravity
+            gravity_2
+            height
+            height_2
+            width
+            width_2
+            x
+            x_2
+            y
+            y_2
+          }
+        }
+      }
+    }
+  }
+`
+
 const StickerTwoTemplate = ({ data }) => {
   const doc = data.prismic.allProducts.edges.slice(0, 1).pop()
 
@@ -313,41 +350,6 @@ const StickerTwoTemplate = ({ data }) => {
   )
 }
 
-export default StickerTwoTemplate
+StickerTwoTemplate.query = query
 
-export const query = graphql`
-  query($uid: String!) {
-    prismic {
-      allProducts(uid: $uid) {
-        edges {
-          node {
-            sticker
-            _meta {
-              uid
-            }
-            sticker_text
-            sticker_text_2
-            cloud_name
-            public_id
-            font_color
-            font_color_2
-            font_family
-            font_family_2
-            font_size
-            font_size_2
-            gravity
-            gravity_2
-            height
-            height_2
-            width
-            width_2
-            x
-            x_2
-            y
-            y_2
-          }
-        }
-      }
-    }
-  }
-`
+export default StickerTwoTemplate

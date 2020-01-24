@@ -22,6 +22,7 @@ export const LogoLink = styled(Link)`
 
   img {
     max-width: 250px;
+    min-width: 150px;
   }
 `
 
@@ -56,7 +57,7 @@ export const Ul = styled.ul`
       text-decoration: none;
       text-transform: uppercase;
       color: ${colors.purple};
-      padding: 1rem 2rem;
+      padding: 1rem 1.5rem;
     }
   }
 
